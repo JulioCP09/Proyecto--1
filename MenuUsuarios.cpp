@@ -1,4 +1,5 @@
 #include "MenuUsuarios.h"
+#include "GestorArchivos.h"
 #include <iostream>
 using namespace std;
 
@@ -24,9 +25,13 @@ void MenuUsuarios::mostrarMenu(ListaUsuarios& lista) {
             cout << "Nombre: "; cin >> nombre;
             cout << "Contrasena: "; cin >> contrasena;
             cout << "Rol (admin/normal): "; cin >> rolStr;
+
             Usuario::Rol rol = (rolStr == "admin") ? Usuario::ADMIN : Usuario::NORMAL;
             Usuario nuevo(id, nombre, contrasena, rol);
             lista.agregarUsuario(nuevo);
+
+            GestorArchivos::guardarUsuarios("usuarios.csv", lista);
+
             cout << "Usuario agregado.\n";
             break;
         }
@@ -43,6 +48,9 @@ void MenuUsuarios::mostrarMenu(ListaUsuarios& lista) {
                 u->setNombre(nuevoNombre);
                 u->setContrasena(nuevaContrasena);
                 u->setRol((rolStr == "admin") ? Usuario::ADMIN : Usuario::NORMAL);
+
+                GestorArchivos::guardarUsuarios("usuarios.csv", lista);
+                
                 cout << "Usuario actualizado.\n";
             } else {
                 cout << "Usuario no encontrado.\n";
@@ -54,6 +62,8 @@ void MenuUsuarios::mostrarMenu(ListaUsuarios& lista) {
             cout << "Ingrese ID del usuario a eliminar: ";
             cin >> id;
             if (lista.eliminarUsuario(id)) {
+                GestorArchivos::guardarUsuarios("usuarios.csv", lista);
+
                 cout << "Usuario eliminado.\n";
             } else {
                 cout << "Usuario no encontrado.\n";

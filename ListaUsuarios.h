@@ -33,6 +33,9 @@ public:
     bool validarCredenciales(int id, string contrasena);
     void listarUsuarios();
     bool eliminarUsuario(int id);
+    
+    // Getter para acceder a la cabeza de la lista
+    NodoUsuario* getCabeza() { return cabeza; }
 };
 
 #endif // LISTAUSUARIOS_H

@@ -31,5 +31,14 @@ void GestorArchivos::cargarUsuarios(const string& archivo, ListaUsuarios& lista)
 
 // Metodo para guardar usuarios en un archivo
 void GestorArchivos::guardarUsuarios(const string& archivo, ListaUsuarios& lista) {
-    // Aquí se implementaría la escritura en CSV recorriendo la lista
+    ofstream file(archivo);
+    NodoUsuario* actual = lista.getCabeza();
+    while (actual) {
+        file << actual->usuario.getId() << ","
+             << actual->usuario.getNombre() << ","
+             << actual->usuario.getContrasena() << ","
+             << (actual->usuario.getRol() == Usuario::ADMIN ? "admin" : "normal")
+             << "\n";
+        actual = actual->siguiente;
+    }
 }
