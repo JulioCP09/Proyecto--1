@@ -2,6 +2,7 @@
 #include "GestorArchivos.h"
 #include "Sesion.h"
 #include "MenuUsuarios.h"
+#include "MenuUsuariosNormales.h"
 #include <iostream>
 using namespace std;
 
@@ -28,9 +29,7 @@ int main() {
         if (sesion.esAdmin()) {
             MenuUsuarios::mostrarMenu(lista);
         } else {
-            cout << "Bienvenido usuario normal: " << u->getNombre() << endl;
-            cout << "Menu: [1] Mis Tareas [2] Kanban" << endl;
-            // Aquí va menú de usuario normal
+            MenuUsuariosNormales::mostrarMenu(lista, u);
         }
     } else {
         cout << "Credenciales inválidas." << endl;
