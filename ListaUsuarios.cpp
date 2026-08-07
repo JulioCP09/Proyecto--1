@@ -32,9 +32,8 @@ Usuario* ListaUsuarios::buscarUsuario(int id) {
 
 // Metodo para validar las credenciales de un usuario
 bool ListaUsuarios::validarCredenciales(int id, string contrasena) {
-    Usuario* u = buscarUsuario(id);
-    if (u && u->getContrasena() == contrasena) return true;
-    return false;
+   Usuario* u = buscarUsuario(id);
+    return (u && u->getContrasena() == contrasena);
 }
 
 // Metodo para listar todos los usuarios
