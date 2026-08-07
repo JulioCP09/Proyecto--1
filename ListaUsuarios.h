@@ -32,6 +32,7 @@ public:
     Usuario* buscarUsuario(int id);
     bool validarCredenciales(int id, string contrasena);
     void listarUsuarios();
+    bool eliminarUsuario(int id);
 };
 
 #endif // LISTAUSUARIOS_H

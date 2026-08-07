@@ -49,8 +49,15 @@ void MenuUsuarios::mostrarMenu(ListaUsuarios& lista) {
             }
             break;
         }
-        case 3: { // Eliminar usuario
-            cout << "(Pendiente: implementar eliminarUsuario en ListaUsuarios)\n";
+        case 3: {
+            int id;
+            cout << "Ingrese ID del usuario a eliminar: ";
+            cin >> id;
+            if (lista.eliminarUsuario(id)) {
+                cout << "Usuario eliminado.\n";
+            } else {
+                cout << "Usuario no encontrado.\n";
+            }
             break;
         }
         case 4: // Listar usuarios

@@ -45,3 +45,35 @@ void ListaUsuarios::listarUsuarios() {
         actual = actual->siguiente;
     }
 }
+
+// Metodo para eliminar un usuario por su ID
+bool ListaUsuarios::eliminarUsuario(int id) {
+    NodoUsuario* actual = cabeza;
+    while (actual) {
+        if (actual->usuario.getId() == id) {
+            // Caso: único nodo
+            if (actual == cabeza && actual == cola) {
+                cabeza = cola = nullptr;
+            }
+            // Caso: eliminar cabeza
+            else if (actual == cabeza) {
+                cabeza = cabeza->siguiente;
+                if (cabeza) cabeza->anterior = nullptr;
+            }
+            // Caso: eliminar cola
+            else if (actual == cola) {
+                cola = cola->anterior;
+                if (cola) cola->siguiente = nullptr;
+            }
+            // Caso: nodo intermedio
+            else {
+                actual->anterior->siguiente = actual->siguiente;
+                actual->siguiente->anterior = actual->anterior;
+            }
+            delete actual;
+            return true;
+        }
+        actual = actual->siguiente;
+    }
+    return false; // no encontrado
+}
