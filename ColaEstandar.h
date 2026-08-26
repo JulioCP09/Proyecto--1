@@ -27,6 +27,9 @@ public:
     void mostrar() const;
     void incrementarCiclosEspera(int maxCiclos);
     void escalarTareas(int maxCiclos, class ColaPrioridad& colaPrioridad);
+    bool cambiarEstado(int id, Tarea::Estado estado);
+    const Tarea* buscar(int id) const;
+    void limpiar();
 };
 
 #endif // COLAESTANDAR_H

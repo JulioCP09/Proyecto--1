@@ -1,8 +1,12 @@
 #include "Utilidades.h"
 #include <iostream>
 #include <limits>
+#ifdef _WIN32
+#include <conio.h>
+#else
 #include <termios.h>
 #include <unistd.h>
+#endif
 
 int obtenerEnteroValidado(const std::string& mensaje) {
     int valor;
@@ -40,6 +44,23 @@ int obtenerOpcionMenu(int min, int max) {
 }
 
 std::string obtenerContrasenaOculta() {
+#ifdef _WIN32
+    std::string contrasena;
+    int ch;
+    while ((ch = _getch()) != '\r' && ch != '\n') {
+        if (ch == '\b' && !contrasena.empty()) {
+            contrasena.pop_back();
+            std::cout << "\b \b";
+        }
+        else if (ch == '\b') continue;
+        else {
+            contrasena.push_back(static_cast<char>(ch));
+            std::cout << '*';
+        }
+    }
+    std::cout << std::endl;
+    return contrasena;
+#else
     struct termios oldt, newt;
     std::string contrasena;
     char ch;
@@ -59,6 +80,7 @@ std::string obtenerContrasenaOculta() {
     tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
     std::cout << std::endl;
     return contrasena;
+#endif
 }
 
 void limpiarBuffer() {

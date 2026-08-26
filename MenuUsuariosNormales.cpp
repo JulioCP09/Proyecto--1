@@ -1,4 +1,6 @@
 #include "MenuUsuariosNormales.h"
+#include "GestorArchivos.h"
+#include "Utilidades.h"
 #include <iostream>
 using namespace std;
 
@@ -12,7 +14,7 @@ void MenuUsuariosNormales::mostrarMenu(ListaUsuarios& lista, Usuario* usuarioAct
         cout << "3. Ver tablero Kanban (pendiente)\n";
         cout << "0. Salir\n";
         cout << "Seleccione una opcion: ";
-        cin >> opcion;
+        opcion = obtenerOpcionMenu(0, 3);
 
         switch (opcion) {
         case 1:
@@ -23,9 +25,13 @@ void MenuUsuariosNormales::mostrarMenu(ListaUsuarios& lista, Usuario* usuarioAct
             break;
         case 2: {
             string nuevaContrasena;
-            cout << "Ingrese nueva contrasena: ";
-            cin >> nuevaContrasena;
+            do {
+                cout << "Ingrese nueva contrasena: ";
+                nuevaContrasena = obtenerContrasenaOculta();
+                if (nuevaContrasena.empty()) cout << "Error: la contrasena no puede estar vacia.\n";
+            } while (nuevaContrasena.empty());
             usuarioActual->setContrasena(nuevaContrasena);
+            GestorArchivos::guardarUsuarios("usuarios.csv", lista);
             cout << "Contrasena actualizada.\n";
             break;
         }

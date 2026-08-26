@@ -33,6 +33,7 @@ public:
 
     // Metodos para manipular la lista de usuarios
     void agregarUsuario(Usuario u);
+    bool existeUsuario(int id);
     Usuario* buscarUsuario(int id);
     bool validarCredenciales(int id, string contrasena);
     void listarUsuarios();

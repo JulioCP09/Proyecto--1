@@ -86,3 +86,7 @@ bool ListaUsuarios::eliminarUsuario(int id) {
     }
     return false; // no encontrado
 }
+
+bool ListaUsuarios::existeUsuario(int id) {
+    return buscarUsuario(id) != nullptr;
+}

@@ -2,6 +2,8 @@
 #define GESTORARCHIVOS_H
 
 #include "ListaUsuarios.h"
+#include "Tarea.h"
+#include <vector>
 #include <string>
 using namespace std;
 
@@ -12,6 +14,8 @@ public:
     static void cargarUsuarios(const string& archivo, ListaUsuarios& lista);
     // Metodo para guardar usuarios en un archivo
     static void guardarUsuarios(const string& archivo, ListaUsuarios& lista);
+    static bool cargarTareas(const string& archivo, vector<Tarea>& tareas);
+    static bool guardarTareas(const string& archivo, const vector<Tarea>& tareas);
 };
 
 #endif // GESTORARCHIVOS_H

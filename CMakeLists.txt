@@ -8,10 +8,16 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_executable(GestorFlujosTrabajo
     "Sistema Gestor de Flujos de Trabajo.cpp"
+    ArbolGeneral.cpp
+    Auditoria.cpp
+    ColaEstandar.cpp
+    ColaPrioridad.cpp
     GestorArchivos.cpp
+    GestorTareas.cpp
     ListaUsuarios.cpp
     MenuUsuarios.cpp
     MenuUsuariosNormales.cpp
+    Pila.cpp
     Tarea.cpp
     Usuario.cpp
     Utilidades.cpp
@@ -20,3 +26,4 @@ add_executable(GestorFlujosTrabajo
 target_include_directories(GestorFlujosTrabajo PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 configure_file(usuarios.csv usuarios.csv COPYONLY)
+configure_file(tareas.csv tareas.csv COPYONLY)

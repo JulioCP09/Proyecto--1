@@ -1,10 +1,15 @@
 #include "MenuUsuarios.h"
 #include "GestorArchivos.h"
+#include "Utilidades.h"
 #include <iostream>
 using namespace std;
 
 // Implementación del metodo mostrarMenu
-void MenuUsuarios::mostrarMenu(ListaUsuarios& lista) {
+void MenuUsuarios::mostrarMenu(ListaUsuarios& lista, bool esAdministrador) {
+    if (!esAdministrador) {
+        cout << "Acceso denegado: solo un administrador puede gestionar usuarios.\n";
+        return;
+    }
     int opcion;
     do {
         cout << "\n--- MENU ADMIN ---\n";
@@ -15,16 +20,28 @@ void MenuUsuarios::mostrarMenu(ListaUsuarios& lista) {
         cout << "5. Buscar usuario\n";
         cout << "0. Salir\n";
         cout << "Seleccione una opcion: ";
-        cin >> opcion;
+        opcion = obtenerOpcionMenu(0, 5);
 
         switch (opcion) {
         case 1: { // Agregar usuario
             int id;
             string nombre, contrasena, rolStr;
-            cout << "ID: "; cin >> id;
-            cout << "Nombre: "; cin >> nombre;
-            cout << "Contrasena: "; cin >> contrasena;
-            cout << "Rol (admin/normal): "; cin >> rolStr;
+            id = obtenerEnteroValidado("ID: ");
+            while (id <= 0 || lista.existeUsuario(id)) {
+                if (id > 0) cout << "Error: ya existe un usuario con ese ID.\n";
+                else cout << "Error: el ID debe ser positivo.\n";
+                id = obtenerEnteroValidado("ID: ");
+            }
+            nombre = obtenerCadenaValidada("Nombre: ");
+            do {
+                cout << "Contrasena: ";
+                contrasena = obtenerContrasenaOculta();
+                if (contrasena.empty()) cout << "Error: la contrasena no puede estar vacia.\n";
+            } while (contrasena.empty());
+            do {
+                rolStr = obtenerCadenaValidada("Rol (admin/normal): ");
+                if (rolStr != "admin" && rolStr != "normal") cout << "Error: el rol debe ser admin o normal.\n";
+            } while (rolStr != "admin" && rolStr != "normal");
 
             Usuario::Rol rol = (rolStr == "admin") ? Usuario::ADMIN : Usuario::NORMAL;
             Usuario nuevo(id, nombre, contrasena, rol);
@@ -37,14 +54,20 @@ void MenuUsuarios::mostrarMenu(ListaUsuarios& lista) {
         }
         case 2: { // Actualizar usuario
             int id;
-            cout << "Ingrese ID del usuario a actualizar: ";
-            cin >> id;
+            id = obtenerEnteroValidado("Ingrese ID del usuario a actualizar: ");
             Usuario* u = lista.buscarUsuario(id);
             if (u) {
                 string nuevoNombre, nuevaContrasena, rolStr;
-                cout << "Nuevo nombre: "; cin >> nuevoNombre;
-                cout << "Nueva contrasena: "; cin >> nuevaContrasena;
-                cout << "Nuevo rol (admin/normal): "; cin >> rolStr;
+                nuevoNombre = obtenerCadenaValidada("Nuevo nombre: ");
+                do {
+                    cout << "Nueva contrasena: ";
+                    nuevaContrasena = obtenerContrasenaOculta();
+                    if (nuevaContrasena.empty()) cout << "Error: la contrasena no puede estar vacia.\n";
+                } while (nuevaContrasena.empty());
+                do {
+                    rolStr = obtenerCadenaValidada("Nuevo rol (admin/normal): ");
+                    if (rolStr != "admin" && rolStr != "normal") cout << "Error: el rol debe ser admin o normal.\n";
+                } while (rolStr != "admin" && rolStr != "normal");
                 u->setNombre(nuevoNombre);
                 u->setContrasena(nuevaContrasena);
                 u->setRol((rolStr == "admin") ? Usuario::ADMIN : Usuario::NORMAL);
@@ -59,8 +82,7 @@ void MenuUsuarios::mostrarMenu(ListaUsuarios& lista) {
         }
         case 3: {
             int id;
-            cout << "Ingrese ID del usuario a eliminar: ";
-            cin >> id;
+            id = obtenerEnteroValidado("Ingrese ID del usuario a eliminar: ");
             if (lista.eliminarUsuario(id)) {
                 GestorArchivos::guardarUsuarios("usuarios.csv", lista);
 
@@ -75,8 +97,7 @@ void MenuUsuarios::mostrarMenu(ListaUsuarios& lista) {
             break;
         case 5: { // Buscar usuario
             int id;
-            cout << "Ingrese ID a buscar: ";
-            cin >> id;
+            id = obtenerEnteroValidado("Ingrese ID a buscar: ");
             Usuario* u = lista.buscarUsuario(id);
             if (u) {
                 cout << "ID: " << u->getId()

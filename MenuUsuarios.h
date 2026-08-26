@@ -7,7 +7,7 @@
 class MenuUsuarios {
 public:
     // Metodo estático para mostrar el menu de usuarios
-    static void mostrarMenu(ListaUsuarios& lista);
+    static void mostrarMenu(ListaUsuarios& lista, bool esAdministrador);
 };
 
 #endif // MENUUSUARIOS_H

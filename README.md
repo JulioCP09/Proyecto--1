@@ -10,6 +10,8 @@ Proyecto de consola en C++17 para administrar usuarios y organizar tareas median
 - `GestorArchivos`: persistencia de usuarios en `usuarios.csv`.
 - `Tarea`: modelo común para el árbol y las colas de tareas.
 - `ArbolGeneral`, `ColaEstandar`, `ColaPrioridad` y `Pila`: estructuras para el flujo de trabajo.
+- `GestorTareas`: coordina las colas, el SLA de cinco ciclos y Deshacer/Rehacer.
+- `Auditoria`: registra acciones en `auditoria_log.csv` usando modo append.
 - `Sistema Gestor de Flujos de Trabajo.cpp`: punto de entrada y menú principal.
 
 ## Compilación

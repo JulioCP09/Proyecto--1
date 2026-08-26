@@ -24,6 +24,8 @@ public:
     int getTamano() const;
     void mostrar() const;
     void limpiar();
+    bool cambiarEstado(int id, Tarea::Estado estado);
+    const Tarea* buscar(int id) const;
 };
 
 #endif // COLAPRIORIDAD_H
