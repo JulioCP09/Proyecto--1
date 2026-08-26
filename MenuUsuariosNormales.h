@@ -3,7 +3,7 @@
 
 #include "ListaUsuarios.h"
 
-// Clase para manejar el menú de usuarios normales
+// Clase para manejar el menu de usuarios normales
 class MenuUsuariosNormales {
 public:
     // Metodo estatico para mostrar el menu de usuarios normales

@@ -1,10 +1,16 @@
 #include "Tarea.h"
 
+#include <stdexcept>
+
 Tarea::Tarea()
     : id(0), titulo(), prioridad(0), responsableId(0), ciclosEspera(0), estado(PENDIENTE) {}
 
 Tarea::Tarea(int id, const std::string& titulo, int prioridad, int responsableId)
-    : id(id), titulo(titulo), prioridad(prioridad), responsableId(responsableId), ciclosEspera(0), estado(PENDIENTE) {}
+    : id(id), titulo(titulo), prioridad(prioridad), responsableId(responsableId), ciclosEspera(0), estado(PENDIENTE) {
+    if (id <= 0) throw std::invalid_argument("El ID de tarea debe ser positivo.");
+    if (titulo.empty()) throw std::invalid_argument("El titulo de tarea no puede estar vacio.");
+    if (prioridad < 0) throw std::invalid_argument("La prioridad no puede ser negativa.");
+}
 
 int Tarea::getId() const {
     return id;
@@ -39,14 +45,17 @@ std::vector<Tarea>& Tarea::getSubtareas() {
 }
 
 void Tarea::setTitulo(const std::string& nuevoTitulo) {
+    if (nuevoTitulo.empty()) throw std::invalid_argument("El titulo de tarea no puede estar vacio.");
     titulo = nuevoTitulo;
 }
 
 void Tarea::setPrioridad(int nuevaPrioridad) {
+    if (nuevaPrioridad < 0) throw std::invalid_argument("La prioridad no puede ser negativa.");
     prioridad = nuevaPrioridad;
 }
 
 void Tarea::setResponsableId(int nuevoResponsableId) {
+    if (nuevoResponsableId < 0) throw std::invalid_argument("El responsable no puede ser negativo.");
     responsableId = nuevoResponsableId;
 }
 

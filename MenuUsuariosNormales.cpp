@@ -10,7 +10,7 @@ void MenuUsuariosNormales::mostrarMenu(ListaUsuarios& lista, Usuario* usuarioAct
         cout << "\n--- MENU USUARIO NORMAL ---\n";
         cout << "Bienvenido, " << usuarioActual->getNombre() << endl;
         cout << "1. Ver mis datos\n";
-        cout << "2. Cambiar mi contraseña\n";
+        cout << "2. Cambiar mi contrasena\n";
         cout << "3. Ver tablero Kanban (pendiente)\n";
         cout << "0. Salir\n";
         cout << "Seleccione una opcion: ";

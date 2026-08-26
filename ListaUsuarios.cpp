@@ -60,7 +60,7 @@ bool ListaUsuarios::eliminarUsuario(int id) {
     NodoUsuario* actual = cabeza;
     while (actual) {
         if (actual->usuario.getId() == id) {
-            // Caso: único nodo
+            // Caso: unico nodo
             if (actual == cabeza && actual == cola) {
                 cabeza = cola = nullptr;
             }

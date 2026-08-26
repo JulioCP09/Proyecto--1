@@ -3,6 +3,7 @@
 #include "Auditoria.h"
 #include "GestorArchivos.h"
 #include <iostream>
+#include <utility>
 
 GestorTareas::GestorTareas() {
     inicializarAuditoria();
@@ -182,11 +183,19 @@ bool GestorTareas::cambiarEstadoComo(int idTarea, Tarea::Estado estado, int idUs
 }
 
 bool GestorTareas::cargar(const std::string& archivo) {
-    tareas.clear(); idsTareas.clear(); tareasUrgentes.clear();
-    if (!GestorArchivos::cargarTareas(archivo, tareas)) return false;
-    for (const Tarea& tarea : tareas) {
-        if (idsTareas.insert(tarea.getId()).second && tarea.getPrioridad() > 0) tareasUrgentes.insert(tarea.getId());
+    std::vector<Tarea> tareasCargadas;
+    if (!GestorArchivos::cargarTareas(archivo, tareasCargadas)) return false;
+
+    std::unordered_set<int> idsCargados;
+    std::unordered_set<int> urgentesCargados;
+    for (const Tarea& tarea : tareasCargadas) {
+        if (!idsCargados.insert(tarea.getId()).second) continue;
+        if (tarea.getPrioridad() > 0) urgentesCargados.insert(tarea.getId());
     }
+
+    tareas = std::move(tareasCargadas);
+    idsTareas = std::move(idsCargados);
+    tareasUrgentes = std::move(urgentesCargados);
     reconstruirColas();
     return true;
 }

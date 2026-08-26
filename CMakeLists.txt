@@ -25,5 +25,11 @@ add_executable(GestorFlujosTrabajo
 
 target_include_directories(GestorFlujosTrabajo PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
+if (MSVC)
+    target_compile_options(GestorFlujosTrabajo PRIVATE /W4 /permissive-)
+else()
+    target_compile_options(GestorFlujosTrabajo PRIVATE -Wall -Wextra -pedantic)
+endif()
+
 configure_file(usuarios.csv usuarios.csv COPYONLY)
 configure_file(tareas.csv tareas.csv COPYONLY)

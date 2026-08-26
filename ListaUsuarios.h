@@ -19,7 +19,7 @@ public:
 // Clase que representa la lista de usuarios
 class ListaUsuarios {
 private:
-    // Punteros al primer y último nodo de la lista
+    // Punteros al primer y ultimo nodo de la lista
     NodoUsuario* cabeza;
     NodoUsuario* cola;
 

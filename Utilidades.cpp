@@ -1,4 +1,7 @@
 #include "Utilidades.h"
+#include "Excepciones.h"
+#include <charconv>
+#include <cctype>
 #include <iostream>
 #include <limits>
 #ifdef _WIN32
@@ -9,15 +12,30 @@
 #endif
 
 int obtenerEnteroValidado(const std::string& mensaje) {
-    int valor;
-    std::cout << mensaje;
-    while (!(std::cin >> valor)) {
-        std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        std::cout << "Entrada inválida. Por favor, ingrese un número: ";
+    std::string entrada;
+    while (true) {
+        std::cout << mensaje;
+        if (!std::getline(std::cin, entrada)) {
+            throw ErrorEntrada("No se pudo leer el valor numerico.");
+        }
+
+        std::size_t inicio = 0;
+        while (inicio < entrada.size() && std::isspace(static_cast<unsigned char>(entrada[inicio]))) ++inicio;
+        std::size_t fin = entrada.size();
+        while (fin > inicio && std::isspace(static_cast<unsigned char>(entrada[fin - 1]))) --fin;
+        if (inicio == fin) {
+            std::cout << "Error: debe ingresar un numero entero valido.\n";
+            continue;
+        }
+
+        int valor = 0;
+        const char* primero = entrada.data() + inicio;
+        const char* ultimo = entrada.data() + fin;
+        const auto resultado = std::from_chars(primero, ultimo, valor);
+        if (resultado.ec == std::errc() && resultado.ptr == ultimo) return valor;
+
+        std::cout << "Error: debe ingresar un numero entero valido.\n";
     }
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    return valor;
 }
 
 std::string obtenerCadenaValidada(const std::string& mensaje) {
@@ -26,7 +44,7 @@ std::string obtenerCadenaValidada(const std::string& mensaje) {
         std::cout << mensaje;
         std::getline(std::cin, valor);
         if (valor.empty()) {
-            std::cout << "El campo no puede estar vacío. Intente de nuevo." << std::endl;
+            std::cout << "El campo no puede estar vacio. Intente de nuevo." << std::endl;
         }
     } while (valor.empty());
     return valor;
@@ -35,9 +53,9 @@ std::string obtenerCadenaValidada(const std::string& mensaje) {
 int obtenerOpcionMenu(int min, int max) {
     int opcion;
     do {
-        opcion = obtenerEnteroValidado("Seleccione una opción: ");
+        opcion = obtenerEnteroValidado("Seleccione una opcion: ");
         if (opcion < min || opcion > max) {
-            std::cout << "Opción fuera de rango. Intente de nuevo." << std::endl;
+            std::cout << "Opcion fuera de rango. Intente de nuevo." << std::endl;
         }
     } while (opcion < min || opcion > max);
     return opcion;

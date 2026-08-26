@@ -5,6 +5,7 @@
 #include "MenuUsuariosNormales.h"
 #include "GestorTareas.h"
 #include "Utilidades.h"
+#include "Excepciones.h"
 #include <iostream>
 using namespace std;
 
@@ -32,7 +33,7 @@ void menuTareas(GestorTareas& gestor, const string& idUsuario, ListaUsuarios& li
             } else if (opcion == 3) {
                 int id = obtenerEnteroValidado("ID de tarea: ");
                 int estado = obtenerOpcionMenu(0, 2);
-                if (!gestor.cambiarEstadoComo(id, static_cast<Tarea::Estado>(estado), stoi(idUsuario), false))
+                if (!gestor.cambiarEstadoComo(id, static_cast<Tarea::Estado>(estado), std::stoi(idUsuario), false))
                     cout << "No se pudo cambiar el estado.\n";
                 else cout << "Estado actualizado.\n";
             }
@@ -95,7 +96,7 @@ void menuTareas(GestorTareas& gestor, const string& idUsuario, ListaUsuarios& li
             int id, estado;
             id = obtenerEnteroValidado("ID de tarea: ");
             estado = obtenerOpcionMenu(0, 2);
-            if (!gestor.cambiarEstadoComo(id, static_cast<Tarea::Estado>(estado), stoi(idUsuario), esAdministrador))
+            if (!gestor.cambiarEstadoComo(id, static_cast<Tarea::Estado>(estado), std::stoi(idUsuario), esAdministrador))
                 cout << "No se pudo cambiar el estado.\n";
             else cout << "Estado actualizado.\n";
         } else if (opcion == 5) {
@@ -186,6 +187,7 @@ void menuPrincipal(Sesion& sesion, ListaUsuarios& lista) {
 }
 
 int main() {
+    try {
     // Cargar usuarios desde el archivo 
     ListaUsuarios lista;
     GestorArchivos::cargarUsuarios("usuarios.csv", lista);
@@ -193,10 +195,10 @@ int main() {
     // Solicitar credenciales al usuario
     int id = obtenerEnteroValidado("Ingrese ID: ");
     string contrasena;
-    cout << "Ingrese contraseña: ";
+    cout << "Ingrese contrasena: ";
     contrasena = obtenerContrasenaOculta();
 
-    // Validar credenciales y manejar la sesión
+    // Validar credenciales y manejar la sesion
     if (lista.validarCredenciales(id, contrasena)) {
         Usuario* u = lista.buscarUsuario(id);
         Sesion sesion;
@@ -208,5 +210,9 @@ int main() {
         cout << "Credenciales incorrectas.\n";
     }
 
+    } catch (const std::exception& error) {
+        cerr << "Error controlado: " << error.what() << "\n";
+        return 1;
+    }
     return 0;
 }

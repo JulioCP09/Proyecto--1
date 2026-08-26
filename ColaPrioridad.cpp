@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <stdexcept>
+#include <utility>
 
 ColaPrioridad::ColaPrioridad() = default;
 
@@ -34,7 +35,7 @@ void ColaPrioridad::insertar(const Tarea& tarea) {
 }
 
 Tarea ColaPrioridad::extraerMaximo() {
-    if (estaVacia()) return Tarea();
+    if (estaVacia()) throw std::out_of_range("No se puede extraer de una cola vacia.");
     Tarea resultado = heap.front();
     heap.front() = heap.back();
     heap.pop_back();
@@ -42,7 +43,10 @@ Tarea ColaPrioridad::extraerMaximo() {
     return resultado;
 }
 
-Tarea ColaPrioridad::obtenerMaximo() const { return estaVacia() ? Tarea() : heap.front(); }
+Tarea ColaPrioridad::obtenerMaximo() const {
+    if (estaVacia()) throw std::out_of_range("No hay tareas en la cola de prioridad.");
+    return heap.front();
+}
 bool ColaPrioridad::estaVacia() const { return heap.empty(); }
 int ColaPrioridad::getTamano() const { return static_cast<int>(heap.size()); }
 

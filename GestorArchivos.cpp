@@ -3,12 +3,13 @@
 #include <sstream>
 #include <algorithm>
 #include <cctype>
+#include "Excepciones.h"
 using namespace std;
 
 // Metodo para cargar usuarios desde un archivo
 void GestorArchivos::cargarUsuarios(const string& archivo, ListaUsuarios& lista) {
     ifstream file(archivo);
-    if (!file) return;
+    if (!file) throw ErrorArchivo("No se pudo abrir el archivo de usuarios.");
     string linea;
 
     while (getline(file, linea)) {
@@ -28,7 +29,7 @@ void GestorArchivos::cargarUsuarios(const string& archivo, ListaUsuarios& lista)
         }
         if (nombre.empty() || contrasena.empty() || lista.existeUsuario(id)) continue;
 
-        // Normalizar rol a minúsculas
+        // Normalizar rol a minusculas
         transform(rolStr.begin(), rolStr.end(), rolStr.begin(), ::tolower);
 
         Usuario::Rol rol = (rolStr == "admin") ? Usuario::ADMIN : Usuario::NORMAL;
@@ -41,6 +42,7 @@ void GestorArchivos::cargarUsuarios(const string& archivo, ListaUsuarios& lista)
 // Metodo para guardar usuarios en un archivo
 void GestorArchivos::guardarUsuarios(const string& archivo, ListaUsuarios& lista) {
     ofstream file(archivo);
+    if (!file) throw ErrorArchivo("No se pudo guardar el archivo de usuarios.");
     NodoUsuario* actual = lista.getCabeza();
     while (actual) {
         file << actual->usuario.getId() << ","
@@ -75,7 +77,7 @@ bool GestorArchivos::cargarTareas(const string& archivo, vector<Tarea>& tareas) 
 
 bool GestorArchivos::guardarTareas(const string& archivo, const vector<Tarea>& tareas) {
     ofstream file(archivo);
-    if (!file) return false;
+    if (!file) throw ErrorArchivo("No se pudo guardar el archivo de tareas.");
     for (const Tarea& tarea : tareas) {
         file << tarea.getId() << ',' << tarea.getTitulo() << ','
              << tarea.getPrioridad() << ',' << tarea.getResponsableId() << ','

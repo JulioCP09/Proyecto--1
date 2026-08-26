@@ -5,7 +5,7 @@
 #include "ColaPrioridad.h"
 #include "Pila.h"
 #include <string>
-#include <set>
+#include <unordered_set>
 #include <vector>
 
 const int MAX_CICLOS_ESPERA = 5;
@@ -44,9 +44,9 @@ private:
     Pila historialRehacer;
     std::vector<CambioEstado> cambiosDeshacer;
     std::vector<CambioEstado> cambiosRehacer;
-    std::set<int> idsTareas;
+    std::unordered_set<int> idsTareas;
     std::vector<Tarea> tareas;
-    std::set<int> tareasUrgentes;
+    std::unordered_set<int> tareasUrgentes;
 
     bool aplicarEstado(int idTarea, Tarea::Estado estado);
     static std::string nombreEstado(Tarea::Estado estado);

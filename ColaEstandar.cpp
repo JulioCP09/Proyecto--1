@@ -3,6 +3,7 @@
 #include "Auditoria.h"
 #include "ColaPrioridad.h"
 #include <iostream>
+#include <stdexcept>
 
 NodoCola::NodoCola(const Tarea& tarea) : dato(tarea), siguiente(nullptr) {}
 
@@ -26,7 +27,7 @@ void ColaEstandar::encolar(const Tarea& tarea) {
 }
 
 Tarea ColaEstandar::desencolar() {
-    if (estaVacia()) return Tarea();
+    if (estaVacia()) throw std::out_of_range("No se puede desencolar una cola vacia.");
     NodoCola* nodo = frente;
     Tarea tarea = nodo->dato;
     frente = frente->siguiente;
@@ -37,7 +38,8 @@ Tarea ColaEstandar::desencolar() {
 }
 
 Tarea ColaEstandar::verFrente() const {
-    return frente ? frente->dato : Tarea();
+    if (!frente) throw std::out_of_range("No hay tareas en la cola estandar.");
+    return frente->dato;
 }
 
 bool ColaEstandar::estaVacia() const { return frente == nullptr; }

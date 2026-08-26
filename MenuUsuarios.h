@@ -3,10 +3,10 @@
 
 #include "ListaUsuarios.h"
 
-// Clase para manejar el menú de usuarios
+// Clase para manejar el menu de usuarios
 class MenuUsuarios {
 public:
-    // Metodo estático para mostrar el menu de usuarios
+    // Metodo estatico para mostrar el menu de usuarios
     static void mostrarMenu(ListaUsuarios& lista, bool esAdministrador);
 };
 

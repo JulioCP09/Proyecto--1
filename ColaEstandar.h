@@ -18,6 +18,8 @@ private:
 public:
     ColaEstandar();
     ~ColaEstandar();
+    ColaEstandar(const ColaEstandar&) = delete;
+    ColaEstandar& operator=(const ColaEstandar&) = delete;
     
     void encolar(const Tarea& tarea);
     Tarea desencolar();

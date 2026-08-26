@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std;
 
-// Implementación del metodo mostrarMenu
+// Implementacion del metodo mostrarMenu
 void MenuUsuarios::mostrarMenu(ListaUsuarios& lista, bool esAdministrador) {
     if (!esAdministrador) {
         cout << "Acceso denegado: solo un administrador puede gestionar usuarios.\n";
