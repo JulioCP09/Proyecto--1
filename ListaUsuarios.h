@@ -26,6 +26,10 @@ private:
 public:
     // Constructor de la lista
     ListaUsuarios();
+    ~ListaUsuarios();
+
+    ListaUsuarios(const ListaUsuarios&) = delete;
+    ListaUsuarios& operator=(const ListaUsuarios&) = delete;
 
     // Metodos para manipular la lista de usuarios
     void agregarUsuario(Usuario u);

@@ -8,6 +8,15 @@ NodoUsuario::NodoUsuario(Usuario u) : usuario(u), siguiente(nullptr), anterior(n
 // Constructor de la lista
 ListaUsuarios::ListaUsuarios() : cabeza(nullptr), cola(nullptr) {}
 
+ListaUsuarios::~ListaUsuarios() {
+    NodoUsuario* actual = cabeza;
+    while (actual) {
+        NodoUsuario* siguiente = actual->siguiente;
+        delete actual;
+        actual = siguiente;
+    }
+}
+
 // Metodo para agregar un usuario a la lista
 void ListaUsuarios::agregarUsuario(Usuario u) {
     NodoUsuario* nuevo = new NodoUsuario(u);
