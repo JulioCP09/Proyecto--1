@@ -64,14 +64,20 @@ int obtenerOpcionMenu(int min, int max) {
 std::string obtenerContrasenaOculta() {
 #ifdef _WIN32
     std::string contrasena;
-    int ch;
-    while ((ch = _getch()) != '\r' && ch != '\n') {
+    while (true) {
+        const int ch = _getch();
+        if (ch == '\r' || ch == '\n') break;
+
+        // Las teclas extendidas devuelven dos codigos; ignorar ambos.
+        if (ch == 0 || ch == 224) {
+            _getch();
+            continue;
+        }
+
         if (ch == '\b' && !contrasena.empty()) {
             contrasena.pop_back();
             std::cout << "\b \b";
-        }
-        else if (ch == '\b') continue;
-        else {
+        } else if (ch != '\b' && ch >= 32 && ch <= 126) {
             contrasena.push_back(static_cast<char>(ch));
             std::cout << '*';
         }

@@ -6,6 +6,7 @@ using namespace std;
 
 // Implementacion del metodo mostrarMenu
 void MenuUsuarios::mostrarMenu(ListaUsuarios& lista, bool esAdministrador) {
+    try {
     if (!esAdministrador) {
         cout << "Acceso denegado: solo un administrador puede gestionar usuarios.\n";
         return;
@@ -34,9 +35,9 @@ void MenuUsuarios::mostrarMenu(ListaUsuarios& lista, bool esAdministrador) {
             }
             nombre = obtenerCadenaValidada("Nombre: ");
             do {
-                cout << "Contrasena: ";
+                cout << "Contrasenna: ";
                 contrasena = obtenerContrasenaOculta();
-                if (contrasena.empty()) cout << "Error: la contrasena no puede estar vacia.\n";
+                if (contrasena.empty()) cout << "Error: la contrasenna no puede estar vacia.\n";
             } while (contrasena.empty());
             do {
                 rolStr = obtenerCadenaValidada("Rol (admin/normal): ");
@@ -60,9 +61,9 @@ void MenuUsuarios::mostrarMenu(ListaUsuarios& lista, bool esAdministrador) {
                 string nuevoNombre, nuevaContrasena, rolStr;
                 nuevoNombre = obtenerCadenaValidada("Nuevo nombre: ");
                 do {
-                    cout << "Nueva contrasena: ";
+                    cout << "Nueva contrasenna: ";
                     nuevaContrasena = obtenerContrasenaOculta();
-                    if (nuevaContrasena.empty()) cout << "Error: la contrasena no puede estar vacia.\n";
+                    if (nuevaContrasena.empty()) cout << "Error: la contrasenna no puede estar vacia.\n";
                 } while (nuevaContrasena.empty());
                 do {
                     rolStr = obtenerCadenaValidada("Nuevo rol (admin/normal): ");
@@ -115,4 +116,8 @@ void MenuUsuarios::mostrarMenu(ListaUsuarios& lista, bool esAdministrador) {
             cout << "Opcion invalida.\n";
         }
     } while (opcion != 0);
+    } catch (const std::exception& error) {
+        cout << "Error controlado en usuarios: " << error.what() << "\n";
+        cout << "Regresando al menu principal.\n";
+    }
 }

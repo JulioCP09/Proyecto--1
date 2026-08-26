@@ -5,12 +5,13 @@
 using namespace std;
 
 void MenuUsuariosNormales::mostrarMenu(ListaUsuarios& lista, Usuario* usuarioActual) {
+    try {
     int opcion;
     do {
         cout << "\n--- MENU USUARIO NORMAL ---\n";
         cout << "Bienvenido, " << usuarioActual->getNombre() << endl;
         cout << "1. Ver mis datos\n";
-        cout << "2. Cambiar mi contrasena\n";
+        cout << "2. Cambiar mi contrasenna\n";
         cout << "3. Ver tablero Kanban (pendiente)\n";
         cout << "0. Salir\n";
         cout << "Seleccione una opcion: ";
@@ -26,13 +27,13 @@ void MenuUsuariosNormales::mostrarMenu(ListaUsuarios& lista, Usuario* usuarioAct
         case 2: {
             string nuevaContrasena;
             do {
-                cout << "Ingrese nueva contrasena: ";
+                cout << "Ingrese nueva contrasenna: ";
                 nuevaContrasena = obtenerContrasenaOculta();
-                if (nuevaContrasena.empty()) cout << "Error: la contrasena no puede estar vacia.\n";
+                if (nuevaContrasena.empty()) cout << "Error: la contrasenna no puede estar vacia.\n";
             } while (nuevaContrasena.empty());
             usuarioActual->setContrasena(nuevaContrasena);
             GestorArchivos::guardarUsuarios("usuarios.csv", lista);
-            cout << "Contrasena actualizada.\n";
+            cout << "Contrasenna actualizada.\n";
             break;
         }
         case 3:
@@ -45,4 +46,8 @@ void MenuUsuariosNormales::mostrarMenu(ListaUsuarios& lista, Usuario* usuarioAct
             cout << "Opcion invalida.\n";
         }
     } while (opcion != 0);
+    } catch (const std::exception& error) {
+        cout << "Error controlado: " << error.what() << "\n";
+        cout << "Regresando al menu principal.\n";
+    }
 }

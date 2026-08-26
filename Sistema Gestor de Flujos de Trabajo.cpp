@@ -10,6 +10,7 @@
 using namespace std;
 
 void menuTareas(GestorTareas& gestor, const string& idUsuario, ListaUsuarios& lista, bool esAdministrador) {
+    try {
     if (!esAdministrador) {
         int opcion;
         do {
@@ -130,12 +131,20 @@ void menuTareas(GestorTareas& gestor, const string& idUsuario, ListaUsuarios& li
             cout << (gestor.eliminarTarea(id, idUsuario) ? "Tarea eliminada.\n" : "Tarea no encontrada.\n");
         }
     } while (opcion != 0);
+    } catch (const std::exception& error) {
+        cout << "Error controlado en tareas: " << error.what() << "\n";
+        cout << "Regresando al menu principal.\n";
+    }
 }
 
 // Funcion para mostrar el menu principal dependiendo del rol del usuario
 void menuPrincipal(Sesion& sesion, ListaUsuarios& lista) {
     GestorTareas gestor;
-    gestor.cargar("tareas.csv");
+    try {
+        gestor.cargar("tareas.csv");
+    } catch (const std::exception& error) {
+        cout << "No se pudieron cargar las tareas: " << error.what() << "\n";
+    }
     int opcion;
     do {
         cout << "\n--- MENU PRINCIPAL ---\n";
@@ -192,23 +201,25 @@ int main() {
     ListaUsuarios lista;
     GestorArchivos::cargarUsuarios("usuarios.csv", lista);
 
-    // Solicitar credenciales al usuario
-    int id = obtenerEnteroValidado("Ingrese ID: ");
-    string contrasena;
-    cout << "Ingrese contrasena: ";
-    contrasena = obtenerContrasenaOculta();
+    for (int intento = 1; intento <= 3; ++intento) {
+        int id = obtenerEnteroValidado("Ingrese ID: ");
+        string contrasena;
+        cout << "Ingrese contrasenna: ";
+        contrasena = obtenerContrasenaOculta();
 
-    // Validar credenciales y manejar la sesion
-    if (lista.validarCredenciales(id, contrasena)) {
-        Usuario* u = lista.buscarUsuario(id);
-        Sesion sesion;
-        sesion.login(u);
+        if (lista.validarCredenciales(id, contrasena)) {
+            Usuario* u = lista.buscarUsuario(id);
+            Sesion sesion;
+            sesion.login(u);
+            cout << "Bienvenido " << u->getNombre() << endl;
+            menuPrincipal(sesion, lista);
+            return 0;
+        }
 
-        cout << "Bienvenido " << u->getNombre() << endl;
-        menuPrincipal(sesion, lista);
-    } else {
-        cout << "Credenciales incorrectas.\n";
+        cout << "Credenciales incorrectas. Intento " << intento << " de 3.\n";
     }
+
+    cout << "Demasiados intentos fallidos. Programa finalizado.\n";
 
     } catch (const std::exception& error) {
         cerr << "Error controlado: " << error.what() << "\n";
